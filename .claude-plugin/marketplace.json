@@ -1,0 +1,27 @@
+{
+  "name": "wenguoli-skills",
+  "owner": {
+    "name": "wenguoli",
+    "email": ""
+  },
+  "metadata": {
+    "description": "Custom skills including Amap (高德地图) geolocation services",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "amap",
+      "version": "1.0.0",
+      "description": "Toolkit for working with Amap (AutoNavi/高德地图) services including geocoding, reverse geocoding, path planning, POI search, and IP location lookup",
+      "author": {
+        "name": "wenguoli",
+        "email": ""
+      },
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/amap"
+      ]
+    }
+  ]
+}

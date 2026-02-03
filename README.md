@@ -15,10 +15,16 @@
 │       ├── install/               # 安装脚本
 │       ├── references/            # API 参考文档
 │       └── scripts/               # 执行脚本
+├── spec/                         # 技能规范文档
+│   └── agent-skills-spec.md
+├── template/                     # 技能模板
+│   └── SKILL.md
 └── README.md                      # 本文档
 ```
 
-## 配置文件说明
+---
+
+## 第一部分：Marketplace 配置指南
 
 ### marketplace.json
 
@@ -96,7 +102,7 @@
 ]
 ```
 
-## Claude安装和卸载命令
+### Claude安装和卸载命令
 
 安装
 
@@ -110,9 +116,193 @@ claude plugin install amap@wenguoli-skills
 claude plugin uninstall amap
 ```
 
+---
 
+## 第二部分：编写 Skills 规范指南
 
-## 如何添加新的 Skill
+### Skill 目录结构
+
+每个 Skill 是一个包含 `SKILL.md` 文件的目录，可选包含其他资源：
+
+```
+skills/
+└── my-skill/                      # Skill 目录（技能名称，全小写，中划线分隔）
+    ├── SKILL.md                   # 【必需】技能描述文档
+    ├── requirements.txt           # 【可选】Python 依赖（pip）
+    ├── install/                   # 【可选】安装脚本
+    │   └── install.sh
+    ├── references/                # 【可选】API 参考文档
+    │   └── api_reference.md
+    ├── scripts/                   # 【可选】执行脚本
+    │   ├── main.py
+    │   └── utils.py
+    └── templates/                 # 【可选】模板文件
+        └── template.html
+```
+
+### SKILL.md 文件规范
+
+`SKILL.md` 是 Skill 的核心描述文件，格式如下：
+
+```markdown
+---
+name: skill-name              # 【必需】技能名称（全小写，中划线分隔）
+description: Brief description # 【必需】简短描述，说明何时使用此技能
+license: License terms        # 【可选】许可证说明
+---
+
+# Skill Title
+
+技能详细说明、使用方法、示例和指南。
+```
+
+#### YAML Frontmatter 字段说明
+
+| 字段 | 必需 | 说明 |
+|------|------|------|
+| `name` | 是 | 技能标识符，全小写，用中划线分隔单词 |
+| `description` | 是 | 简短描述（1-2句话），说明技能功能和触发场景 |
+| `license` | 否 | 许可证类型（如 "MIT", "Apache-2.0", "Proprietary"） |
+
+#### description 最佳实践
+
+description 应该包含触发关键词，便于 Claude 自动识别何时使用该技能：
+
+```markdown
+description: "Toolkit for Amap (高德地图) services. Use when users need: (1) Geocoding (address to coordinates), (2) Reverse geocoding, (3) Route planning, (4) POI search, (5) IP location, or any China map-related queries. Triggered by: '地址', '坐标', '导航', '高德地图', 'amap', etc."
+```
+
+#### SKILL.md 内容结构建议
+
+```markdown
+---
+name: my-skill
+description: Brief description of what this skill does
+---
+
+# Skill Name
+
+## Overview
+技能概述，说明它能做什么。
+
+## Prerequisites
+先决条件，如 API 密钥、环境配置等。
+
+## Usage Examples
+使用示例，提供常用命令或调用方式。
+
+## Script Reference
+脚本详细说明，包括参数、选项和使用方法。
+
+## Best Practices
+最佳实践建议。
+
+## Troubleshooting
+常见问题和解决方案。
+```
+
+### 触发条件设置
+
+在 `description` 中包含触发关键词，当用户提及这些关键词时，Claude 会自动使用该 Skill：
+
+```markdown
+description: "When users mention: '地址', '经纬度', '坐标', '导航', '路线', '附近', '定位', '高德地图', 'amap', '查询', or any location-related queries in Chinese."
+```
+
+### 依赖管理
+
+#### requirements.txt
+
+如果 Skill 需要 Python 依赖，在根目录创建 `requirements.txt`：
+
+```
+requests>=2.28.0
+pandas>=1.4.0
+```
+
+依赖会在 Skill 首次加载时自动安装。
+
+#### install/ 目录
+
+如果需要额外的安装步骤，在 `install/` 目录添加脚本：
+
+```
+install/
+├── setup.sh          # Bash 安装脚本
+└── README.md         # 安装说明
+```
+
+### 脚本组织
+
+#### scripts/ 目录
+
+将可执行脚本放在 `scripts/` 目录中：
+
+```
+scripts/
+├── __init__.py       # 包初始化（可选）
+├── main.py           # 主入口脚本
+├── geocoding.py      # 地理编码功能
+├── search.py         # 搜索功能
+└── utils.py          # 工具函数
+```
+
+脚本应该：
+- 支持 `--help` 参数显示用法
+- 使用 argparse 或 click 等库处理命令行参数
+- 返回结构化的输出（JSON 或格式化的文本）
+
+#### 脚本示例
+
+```python
+#!/usr/bin/env python3
+"""Geocoding script for address to coordinate conversion."""
+
+import argparse
+import sys
+
+def main():
+    parser = argparse.ArgumentParser(description="Address to coordinates conversion")
+    parser.add_argument("--address", required=True, help="Address to geocode")
+    parser.add_argument("--city", help="City for better accuracy")
+    args = parser.parse_args()
+
+    # Implementation
+    print(f"Geocoding: {args.address}")
+
+if __name__ == "__main__":
+    main()
+```
+
+### 参考文档
+
+#### references/ 目录
+
+存放 API 文档、使用指南等参考材料：
+
+```
+references/
+├── api_reference.md   # API 参考
+├── user_guide.md      # 用户指南
+└── faq.md             # 常见问题
+```
+
+### 模板文件
+
+#### templates/ 目录
+
+存放可复用的模板文件：
+
+```
+templates/
+├── email_template.html
+├── report_template.md
+└── config_template.json
+```
+
+---
+
+## 第三部分：添加新 Skill 流程
 
 ### 步骤 1：创建 Skill 目录
 
@@ -120,33 +310,28 @@ claude plugin uninstall amap
 
 ```bash
 mkdir -p /Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills/skills/new-skill
+mkdir -p /Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills/skills/new-skill/scripts
+mkdir -p /Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills/skills/new-skill/references
 ```
 
-### 步骤 2：创建必要文件
+### 步骤 2：创建 SKILL.md
 
-在新的技能目录中创建：
-- `SKILL.md` - 技能描述文档（必须包含 YAML frontmatter）
-- `requirements.txt` - Python 依赖（如果需要）
-- `install/` - 安装脚本（可选）
-- `references/` - 参考文档（可选）
-- `scripts/` - 执行脚本（可选）
-
-**SKILL.md 示例：**
+在 Skill 目录创建 `SKILL.md`：
 
 ```markdown
 ---
 name: new-skill
-description: 简短描述，说明何时应该使用此技能
+description: Brief description of the skill and when to use it.
 ---
 
 # New Skill
 
-详细描述技能的功能、用法和示例。
+Detailed description and instructions.
 ```
 
 ### 步骤 3：更新 marketplace.json
 
-在 `.claude-plugin/marketplace.json` 的 `plugins[0].skills` 数组中添加新技能：
+在 `.claude-plugin/marketplace.json` 的 `plugins[0].skills` 数组中添加：
 
 ```json
 {
@@ -157,27 +342,52 @@ description: 简短描述，说明何时应该使用此技能
       "strict": false,
       "skills": [
         "./skills/amap",
-        "./skills/new-skill"  // 新添加的技能
+        "./skills/new-skill"
       ]
     }
   ]
 }
 ```
 
-### 步骤 4：更新 known_marketplaces.json 的 lastUpdated
+### 步骤 4：重启 Claude
 
-```json
-"wenguoli-skills": {
-  ...
-  "lastUpdated": "2026-02-02T00:00:00.000Z"  // 更新为当前时间
-}
+重启 Claude CLI 使更改生效：
+
+```bash
+exit
+claude
 ```
 
-### 步骤 5：重启 Claude
+---
 
-重启 Claude 以使更改生效。
+## 第四部分：官方参考资源
 
-## Directory-Sourced vs GitHub-Sourced Marketplaces
+### Agent Skills 规范
+
+官方规范文档：[https://agentskills.io/specification](https://agentskills.io/specification)
+
+### 官方 Skills 示例
+
+参考 [anthropic-agent-skills](https://github.com/anthropic/skills) 仓库获取完整示例：
+
+| Skill | 功能 |
+|-------|------|
+| `docx` | Word 文档创建、编辑、分析 |
+| `pdf` | PDF 文档处理 |
+| `pptx` | PowerPoint 演示文稿 |
+| `xlsx` | Excel 电子表格 |
+| `algorithmic-art` | 算法艺术生成 |
+| `webapp-testing` | Web 应用测试 |
+
+### 官方文档
+
+- [What are skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
+- [Using skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
+- [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills)
+
+---
+
+## 附录 A：Directory-Sourced vs GitHub-Sourced
 
 ### GitHub-Sourced Marketplace（如 anthropic-agent-skills）
 
@@ -195,88 +405,21 @@ description: 简短描述，说明何时应该使用此技能
 - **安装路径**: 应该指向 marketplace 目录（`/marketplaces/wenguoli-skills/`）
 - **特点**: Cache 会被标记为 orphaned（.orphaned_at 文件），因为 marketplace 目录才是权威来源
 
-## Installed vs Marketplaces 的区别
+---
 
-在 `/plugin` 命令中，有两个不同的区域：
-
-### Marketplaces 区域
-
-显示**所有已注册的 Marketplace**，无论是否安装了其中的插件。Marketplace 注册在 `known_marketplaces.json` 中：
-
-| Marketplace | 来源类型 | 说明 |
-|-------------|----------|------|
-| anthropic-agent-skills | GitHub | 远程仓库克隆 |
-| claude-plugins-official | GitHub | 远程仓库克隆 |
-| wenguoli-skills | Directory | 本地目录源 |
-
-### Installed 区域
-
-显示**已安装的具体插件**，插件注册在 `installed_plugins.json` 中：
-
-| 插件 | Marketplace | 安装路径 |
-|------|-------------|----------|
-| document-skills | anthropic-agent-skills | `/cache/.../document-skills/...` |
-| example-skills | anthropic-agent-skills | `/cache/.../example-skills/...` |
-| pyright-lsp | claude-plugins-official | `/cache/.../pyright-lsp/1.0.0` |
-| amap | wenguoli-skills | `/marketplaces/wenguoli-skills/` |
-
-### 为什么 amap 在 Installed 列表中看不到？
-
-这个问题可能有以下原因：
-
-1. **显示刷新问题**: `/plugin` 命令的输出可能缓存了旧数据，但实际 `installed_plugins.json` 中确实有 `amap@wenguoli-skills` 的记录
-
-2. **安装路径类型不同**:
-   - GitHub-sourced 的插件，安装路径指向 `/cache/...`
-   - Directory-sourced 的插件，安装路径指向 `/marketplaces/...`
-   - CLI 可能根据路径类型对插件有不同的显示逻辑
-
-3. **市场加载 vs 插件安装**:
-   - Directory-sourced marketplace 的插件可能被系统视为"始终从 marketplace 直接加载"
-   - 不需要"安装"步骤，因此可能不显示在 Installed 列表中
-
-**验证插件是否可用**:
-
-```bash
-# 检查 installed_plugins.json 是否包含插件
-cat /Users/wenguoli/.claude/plugins/installed_plugins.json | grep amap
-
-# 检查技能是否被加载
-# 在 Claude 对话中尝试使用 amap 技能
-```
-
-## 常见问题
+## 附录 B：常见问题
 
 ### Q: 为什么缓存路径显示为 `unknown` 而不是版本号？
 
-A: 这是因为 `marketplace.json` 中的 plugin 定义缺少 `version` 字段。**解决方案**：在 plugin 定义中添加 `version` 字段：
-
-```json
-{
-  "plugins": [
-    {
-      "name": "amap",
-      "version": "1.0.0",  // 必须添加此字段
-      "description": "...",
-      "author": {
-        "name": "wenguoli",
-        "email": ""
-      },
-      ...
-    }
-  ]
-}
-```
-
-修复后，缓存路径将从 `/cache/wenguoli-skills/amap/unknown/` 变为 `/cache/wenguoli-skills/amap/1.0.0/`。
+A: 这是因为 `marketplace.json` 中的 plugin 定义缺少 `version` 字段。**解决方案**：在 plugin 定义中添加 `version` 字段。
 
 ### Q: 为什么会生成 `.orphaned_at` 文件？
 
-A: 对于 Directory-sourced Marketplace，cache 中的插件副本会被标记为 orphaned，因为 Marketplace 目录本身就是权威来源。删除 cache 并将 `installPath` 指向 marketplace 即可解决。
+A: 对于 Directory-sourced Marketplace，cache 中的插件副本会被标记为 orphaned。删除 cache 并将 `installPath` 指向 marketplace 即可解决。
 
 ### Q: 可以直接在 cache 目录修改代码吗？
 
-A: 不建议。对于 Directory-sourced Marketplace，应该直接在 `/marketplaces/wenguoli-skills/` 目录修改。
+A: 不建议。对于 Directory-sourced Marketplace，应该直接在 Marketplace 目录修改。
 
 ### Q: 如何验证 Skill 是否正确加载？
 

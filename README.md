@@ -5,21 +5,21 @@
 ## 目录结构
 
 ```
-/Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills/
+wenguoli-skills/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace 配置文件
 ├── skills/
-│   └── amap/                     # 高德地图技能
-│       ├── SKILL.md               # 技能描述文档
-│       ├── requirements.txt       # Python 依赖
-│       ├── install/               # 安装脚本
-│       ├── references/            # API 参考文档
-│       └── scripts/               # 执行脚本
+│   ├── amap/                     # 高德地图技能
+│   └── model-comparison/         # 大模型能力对比技能
+│       ├── SKILL.md              # 技能描述文档
+│       ├── requirements.txt      # Python 依赖
+│       ├── scripts/              # 执行脚本
+│       └── references/           # 参考文档
 ├── spec/                         # 技能规范文档
 │   └── agent-skills-spec.md
 ├── template/                     # 技能模板
 │   └── SKILL.md
-└── README.md                      # 本文档
+└── README.md                     # 本文档
 ```
 
 ---
@@ -38,14 +38,14 @@
     "email": ""
   },
   "metadata": {
-    "description": "Custom skills including Amap (高德地图) geolocation services",
+    "description": "Custom utility skills collection including geolocation services, model comparison, and more",
     "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "amap",
+      "name": "custom-skills",
       "version": "1.0.0",
-      "description": "Toolkit for working with Amap (AutoNavi/高德地图) services...",
+      "description": "A collection of custom skills for various tasks including Amap geolocation services and model comparison capabilities",
       "author": {
         "name": "wenguoli",
         "email": ""
@@ -53,7 +53,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/amap"
+        "./skills/amap",
+        "./skills/model-comparison"
       ]
     }
   ]
@@ -63,38 +64,42 @@
 **关键字段说明：**
 - `name`: Marketplace 名称
 - `plugins[]`: Marketplace 中包含的插件列表
-- `plugins[].name`: 插件名称
-- `plugins[].version`: **插件版本号（必需）** - 用于缓存路径（如 `/cache/wenguoli-skills/amap/1.0.0/`），缺少此字段会导致版本显示为 `unknown`
+- `plugins[].name`: 插件名称（建议使用通用名称如 "custom-skills"）
+- `plugins[].version`: **插件版本号（必需）** - 用于缓存路径，缺少此字段会导致版本显示为 `unknown`
 - `plugins[].description`: 插件描述
 - `plugins[].author`: 插件作者信息（可选）
 - `plugins[].source`: 相对于 Marketplace 根目录的源路径（通常是 `"./"`）
 - `plugins[].strict`: 是否严格模式（可选）
 - `plugins[].skills[]`: 相对于 Marketplace 根目录的技能路径列表
 
+> **提示**：添加新技能时，只需在 `skills` 数组中添加新路径即可，如 `"./skills/new-skill"`。
+
 ### known_marketplaces.json
 
-需要在 `/Users/wenguoli/.claude/plugins/known_marketplaces.json` 中注册此 Marketplace：
+需要在 Claude plugins 配置目录注册此 Marketplace：
 
 ```json
 "wenguoli-skills": {
   "source": {
     "source": "directory",
-    "path": "/Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills"
+    "path": "<path-to-wenguoli-skills>"
   },
-  "installLocation": "/Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills",
+  "installLocation": "<path-to-wenguoli-skills>",
   "lastUpdated": "2026-02-01T15:55:00.000Z"
 }
 ```
 
+其中 `<path-to-wenguoli-skills>` 是本地 Marketplace 目录的绝对路径。
+
 ### installed_plugins.json
 
-插件安装路径应指向 Marketplace 目录（而非 cache）：
+插件安装路径应指向 Marketplace 目录：
 
 ```json
 "amap@wenguoli-skills": [
   {
     "scope": "user",
-    "installPath": "/Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills",
+    "installPath": "<path-to-wenguoli-skills>",
     "version": "1.0.0",
     "installedAt": "2026-02-01T15:10:00.000Z",
     "lastUpdated": "2026-02-02T00:00:00.000Z"
@@ -309,9 +314,8 @@ templates/
 在 `skills/` 目录下创建新的技能目录：
 
 ```bash
-mkdir -p /Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills/skills/new-skill
-mkdir -p /Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills/skills/new-skill/scripts
-mkdir -p /Users/wenguoli/.claude/plugins/marketplaces/wenguoli-skills/skills/new-skill/references
+mkdir -p skills/new-skill/scripts
+mkdir -p skills/new-skill/references
 ```
 
 ### 步骤 2：创建 SKILL.md
@@ -372,6 +376,8 @@ claude
 
 | Skill | 功能 |
 |-------|------|
+| `amap` | 高德地图服务 |
+| `model-comparison` | 大模型能力对比分析 |
 | `docx` | Word 文档创建、编辑、分析 |
 | `pdf` | PDF 文档处理 |
 | `pptx` | PowerPoint 演示文稿 |
@@ -402,7 +408,7 @@ claude
 - **来源**: 本地目录
 - **Marketplace 目录**: **就是源码本身**，是权威位置
 - **Cache 目录**: 冗余的副本，不需要
-- **安装路径**: 应该指向 marketplace 目录（`/marketplaces/wenguoli-skills/`）
+- **安装路径**: 应该指向 marketplace 目录
 - **特点**: Cache 会被标记为 orphaned（.orphaned_at 文件），因为 marketplace 目录才是权威来源
 
 ---

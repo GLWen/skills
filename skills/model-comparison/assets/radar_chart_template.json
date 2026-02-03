@@ -1,0 +1,28 @@
+{
+  "title": "大模型能力对比雷达图",
+  "description": "多维度能力可视化对比",
+  "chartType": "radar",
+  "dimensions": [
+    { "name": "代码能力", "weight": 1.0 },
+    { "name": "数学推理", "weight": 1.0 },
+    { "name": "中文理解", "weight": 1.0 },
+    { "name": "多语言能力", "weight": 1.0 },
+    { "name": "长上下文", "weight": 1.0 },
+    { "name": "逻辑推理", "weight": 1.0 },
+    { "name": "工具调用", "weight": 1.0 },
+    { "name": "成本效率", "weight": 1.0 }
+  ],
+  "display": {
+    "showLegend": true,
+    "showScoreLabels": true,
+    "gridLines": 5,
+    "maxValue": 10
+  },
+  "colors": {
+    "MiniMax M2.1": "#3B82F6",
+    "GLM-4.7": "#10B981",
+    "deepseek-chat": "#EF4444",
+    "qwen3-coder-plus": "#F59E0B",
+    "kimi-k2-thinking-turbo": "#8B5CF6"
+  }
+}

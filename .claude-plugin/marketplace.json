@@ -5,14 +5,14 @@
     "email": ""
   },
   "metadata": {
-    "description": "Custom skills including Amap (高德地图) geolocation services",
+    "description": "Custom utility skills collection including geolocation services, model comparison, and more",
     "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "amap",
+      "name": "custom-skills",
       "version": "1.0.0",
-      "description": "Toolkit for working with Amap (AutoNavi/高德地图) services including geocoding, reverse geocoding, path planning, POI search, and IP location lookup",
+      "description": "A collection of custom skills for various tasks including Amap geolocation services and model comparison capabilities",
       "author": {
         "name": "wenguoli",
         "email": ""
@@ -20,7 +20,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/amap"
+        "./skills/amap",
+        "./skills/model-comparison"
       ]
     }
   ]

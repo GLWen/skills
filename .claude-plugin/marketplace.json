@@ -10,19 +10,26 @@
   },
   "plugins": [
     {
-      "name": "expert-skills",
+      "name": "amap",
       "version": "1.0.0",
-      "description": "A collection of custom skills for various tasks including Amap geolocation services and model comparison capabilities",
+      "description": "高德地图服务工具包，支持地址解析、逆地址解析、路径规划、POI搜索和IP定位",
       "author": {
         "name": "wenguoli",
-        "email": ""
+        "email": "15160333779@163.com"
       },
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/amap",
-        "./skills/model-comparison"
-      ]
+      "source": "./skills/amap",
+      "strict": false
+    },
+    {
+      "name": "model-comparison",
+      "version": "1.0.0",
+      "description": "LLM模型对比工具，支持多维度比较不同模型的性能、能力和成本",
+      "author": {
+        "name": "wenguoli",
+        "email": "15160333779@163.com"
+      },
+      "source": "./skills/model-comparison",
+      "strict": false
     }
   ]
 }

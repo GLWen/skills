@@ -10,22 +10,38 @@
 
 **文件位置**: `.claude-plugin/marketplace.json`
 
-**更新内容**: 在 `plugins[0].skills` 数组中添加新技能路径
+**更新内容**: 在 `plugins` 数组中添加新插件配置
 
 ```json
 {
   "plugins": [
     {
-      "name": "custom-skills",
-      "skills": [
-        "./skills/amap",
-        "./skills/model-comparison",
-        "./skills/new-skill"   // 新增这行
-      ]
+      "name": "amap",
+      "version": "1.0.0",
+      "description": "高德地图服务工具包，支持地址解析、逆地址解析、路径规划、POI搜索和IP定位",
+      "author": {
+        "name": "wenguoli",
+        "email": "15160333779@163.com"
+      },
+      "source": "./skills/amap",
+      "strict": false
+    },
+    {
+      "name": "new-skill",
+      "version": "1.0.0",
+      "description": "新技能功能描述",
+      "author": {
+        "name": "wenguoli",
+        "email": "15160333779@163.com"
+      },
+      "source": "./skills/new-skill",
+      "strict": false
     }
   ]
 }
 ```
+
+**注意**: 每个 skill 独立一个 plugin，`source` 指向对应技能目录。
 
 ---
 
@@ -109,7 +125,7 @@ license: MIT
 |------|------|------|
 | 1 | 创建技能目录 | `skills/new-skill/` |
 | 2 | 创建 SKILL.md | `skills/new-skill/SKILL.md` |
-| 3 | 更新 marketplace.json | `.claude-plugin/marketplace.json` |
+| 3 | 更新 marketplace.json（添加独立 plugin） | `.claude-plugin/marketplace.json` |
 | 4 | (可选) 更新 README.md | `README.md` |
 
 ---

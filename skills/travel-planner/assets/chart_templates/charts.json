@@ -1,0 +1,117 @@
+{
+  "budget": {
+    "type": "bar",
+    "options": {
+      "indexAxis": "y",
+      "responsive": true,
+      "plugins": {
+        "legend": {
+          "display": false
+        },
+        "title": {
+          "display": true,
+          "text": "预算分布"
+        }
+      },
+      "scales": {
+        "x": {
+          "beginAtZero": true,
+          "title": {
+            "display": true,
+            "text": "金额 (元)"
+          }
+        }
+      }
+    },
+    "colors": [
+      "#3498db",
+      "#2ecc71",
+      "#f39c12",
+      "#e74c3c",
+      "#9b59b6",
+      "#1abc9c"
+    ]
+  },
+  "timeline": {
+    "type": "line",
+    "options": {
+      "responsive": true,
+      "plugins": {
+        "legend": {
+          "position": "bottom"
+        },
+        "title": {
+          "display": true,
+          "text": "每日支出趋势"
+        }
+      },
+      "scales": {
+        "y": {
+          "beginAtZero": true,
+          "title": {
+            "display": true,
+            "text": "花费 (元)"
+          }
+        },
+        "x": {
+          "title": {
+            "display": true,
+            "text": "日期"
+          }
+        }
+      }
+    }
+  },
+  "weather": {
+    "type": "line",
+    "options": {
+      "responsive": true,
+      "plugins": {
+        "legend": {
+          "display": false
+        },
+        "title": {
+          "display": true,
+          "text": "温度变化趋势"
+        }
+      },
+      "scales": {
+        "y": {
+          "title": {
+            "display": true,
+            "text": "温度 (°C)"
+          }
+        }
+      }
+    },
+    "datasets": [
+      {
+        "label": "最高温度",
+        "borderColor": "#e74c3c",
+        "backgroundColor": "rgba(231, 76, 60, 0.1)",
+        "fill": true
+      },
+      {
+        "label": "最低温度",
+        "borderColor": "#3498db",
+        "backgroundColor": "rgba(52, 152, 219, 0.1)",
+        "fill": true
+      }
+    ]
+  },
+  "expenses": {
+    "type": "doughnut",
+    "options": {
+      "responsive": true,
+      "plugins": {
+        "legend": {
+          "position": "right"
+        },
+        "title": {
+          "display": true,
+          "text": "支出占比"
+        }
+      }
+    }
+  }
+}

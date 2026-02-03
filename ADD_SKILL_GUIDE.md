@@ -10,7 +10,7 @@
 
 **文件位置**: `.claude-plugin/marketplace.json`
 
-**更新内容**: 在 `plugins` 数组中添加新插件配置
+**更新内容**: 在 `plugins` 数组中添加新插件配置（每个 skill 独立一个 plugin）
 
 ```json
 {
@@ -83,12 +83,12 @@
 ```
 skills/new-skill/
 ├── SKILL.md              # 【必需】技能描述文档
-├── requirements.txt       # 【可选】Python 依赖
+├── requirements.txt      # 【可选】Python 依赖
 ├── scripts/              # 【可选】执行脚本
 │   └── main.py
 ├── references/           # 【可选】参考文档
 │   └── README.md
-└── assets/               # 【可选】静态资源
+└── assets/              # 【可选】静态资源
 ```
 
 ---

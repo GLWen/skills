@@ -30,6 +30,17 @@
       },
       "source": "./skills/model-comparison",
       "strict": false
+    },
+    {
+      "name": "travel-planner",
+      "version": "1.0.0",
+      "description": "旅游攻略技能，支持行程规划、酒店/美食推荐、天气查询，多格式输出（Word/MD/Web）",
+      "author": {
+        "name": "wenguoli",
+        "email": "15160333779@163.com"
+      },
+      "source": "./skills/travel-planner",
+      "strict": false
     }
   ]
 }

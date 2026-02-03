@@ -10,11 +10,13 @@ wenguoli-skills/
 │   └── marketplace.json          # Marketplace 配置文件
 ├── skills/
 │   ├── amap/                     # 高德地图技能
-│   └── model-comparison/         # 大模型能力对比技能
+│   ├── model-comparison/         # 大模型能力对比技能
+│   └── travel-planner/           # 旅游攻略技能
 │       ├── SKILL.md              # 技能描述文档
 │       ├── requirements.txt      # Python 依赖
 │       ├── scripts/              # 执行脚本
-│       └── references/           # 参考文档
+│       ├── references/           # 参考文档
+│       └── assets/               # 静态资源
 ├── spec/                         # 技能规范文档
 │   └── agent-skills-spec.md
 ├── template/                     # 技能模板
@@ -378,12 +380,7 @@ claude
 |-------|------|
 | `amap` | 高德地图服务 |
 | `model-comparison` | 大模型能力对比分析 |
-| `docx` | Word 文档创建、编辑、分析 |
-| `pdf` | PDF 文档处理 |
-| `pptx` | PowerPoint 演示文稿 |
-| `xlsx` | Excel 电子表格 |
-| `algorithmic-art` | 算法艺术生成 |
-| `webapp-testing` | Web 应用测试 |
+| `travel-planner` | 旅游攻略生成 |
 
 ### 官方文档
 
